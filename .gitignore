@@ -1,3 +1,10 @@
+# These fo
 event_data/*
+!event_data/.gitkeep
 frames/*
+!frames/.gitkeep
 video/*
+!video/.gitkeep
+
+.idea/*
+.DS_Store
