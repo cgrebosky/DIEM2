@@ -8,23 +8,16 @@ import data
 import video
 
 
-def manipulate_frame(data: data.SingleFrameData, args: str, frame_number: int):
+def manipulate_frame(_args: str, frame_number: int):
 
-    if args.find('h') >= 0:
-        draw.draw_opencv_color_heatmap(data, frame_number)
+    if _args.find('h') >= 0:
+        draw.draw_opencv_color_heatmap(frame_number)
 
-    if args.find('o') >= 0:
-        draw.draw_opencv_occluded_heatmap(data, frame_number)
+    if _args.find('o') >= 0:
+        draw.draw_opencv_occluded_heatmap(frame_number)
 
-    if args.find('c') >= 0:
-        draw.draw_circles(data, frame_number)
-
-
-movie = data.MovieData()
-
-
-def l_manipulate_frame(f_num):
-    manipulate_frame(movie.video_data[f_num-1], sys.argv[1], f_num)
+    if _args.find('c') >= 0:
+        draw.draw_circles(frame_number)
 
 
 if __name__ == '__main__':
@@ -40,11 +33,11 @@ if __name__ == '__main__':
     # print("SPLITTING VIDEO")
     # video.split_video(sys.argv[2])
 
-    movie = data.MovieData()
+    data.MovieData("event_data")
     args = sys.argv[1]
 
     for i in range(1, len(os.listdir("frames"))):
-        l_manipulate_frame(i)
+        manipulate_frame(args, i)
 
     # 4 processes seems to be the best on my computer.  This may be different on yours.
     # TODO: Figure out multithreading!  The code below kinda works, but I still have to manage variable-sharing... :(
