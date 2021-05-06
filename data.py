@@ -19,7 +19,9 @@ class SingleEyeData:
 
 
 class MovieData:
-    video_data = [[] for i in range(0, 528)]
+    # This is 33 seconds of 30fps footage, this is a reasonable buffer to have.
+    # More space can be added on the fly, but that takes time, so we start with some space allocated
+    video_data = [[] for i in range(0, 1000)]
 
     def __init__(self, data_url: str):
 
@@ -35,9 +37,19 @@ class MovieData:
             print("Gathering data for %s", i)
 
             # TODO: Change to detect frame-count?  Probably while.
-            for j in range(0, 528):
-                a, b = read_line(file.readline())
-                self.video_data[j].append(a)
-                self.video_data[j].append(b)
+            frame = 0
+            for line in file:
+                a, b = read_line(line)
+
+                try:
+                    self.video_data[frame].append(a)
+                    self.video_data[frame].append(b)
+                except IndexError:
+                    self.video_data.append([])
+                    self.video_data.append([])
+                    self.video_data[frame].append(a)
+                    self.video_data[frame].append(b)
+
+                frame += 1
 
             file.close()
