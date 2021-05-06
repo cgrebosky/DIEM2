@@ -24,26 +24,35 @@ movie = data.MovieData()
 
 
 def l_manipulate_frame(f_num):
-    manipulate_frame(data.SingleFrameData(), sys.argv[1], f_num)
+    manipulate_frame(movie.video_data[f_num-1], sys.argv[1], f_num)
 
 
 if __name__ == '__main__':
+    args = sys.argv[1]
+    video_name = sys.argv[2]
+    data_url = sys.argv[3]
+    print("args: %s" % args)
+    print("video: %s" % video_name)
+    print("data url: %s" % data_url)
 
-    print(sys.argv[2])
     startT = time.time()
 
-    #print("SPLITTING VIDEO")
-    #video.split_video(sys.argv[2])
+    # print("SPLITTING VIDEO")
+    # video.split_video(sys.argv[2])
 
     movie = data.MovieData()
     args = sys.argv[1]
 
+    for i in range(1, len(os.listdir("frames"))):
+        l_manipulate_frame(i)
+
     # 4 processes seems to be the best on my computer.  This may be different on yours.
-    p = Pool(processes=4)
-    result = p.map(
-        l_manipulate_frame,
-        range(1, len(os.listdir("frames")))
-    )
+    # TODO: Figure out multithreading!  The code below kinda works, but I still have to manage variable-sharing... :(
+    # p = Pool(processes=4)
+    # result = p.map(
+    #     l_manipulate_frame,
+    #     range(1, len(os.listdir("frames")))
+    # )
 
     endT = time.time()
     dT = endT - startT
