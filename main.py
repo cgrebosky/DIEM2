@@ -1,5 +1,4 @@
 import os
-from multiprocessing import Pool
 
 import draw
 import sys
@@ -30,26 +29,17 @@ if __name__ == '__main__':
 
     startT = time.time()
 
-    # print("SPLITTING VIDEO")
-    # video.split_video(sys.argv[2])
+    print("SPLITTING VIDEO")
+    video.split_video(sys.argv[2])
 
     data.MovieData("event_data")
-    args = sys.argv[1]
 
     for i in range(1, len(os.listdir("frames"))):
         manipulate_frame(args, i)
 
-    # 4 processes seems to be the best on my computer.  This may be different on yours.
-    # TODO: Figure out multithreading!  The code below kinda works, but I still have to manage variable-sharing... :(
-    # p = Pool(processes=4)
-    # result = p.map(
-    #     l_manipulate_frame,
-    #     range(1, len(os.listdir("frames")))
-    # )
+    print("CREATING VIDEO")
+    video.create_video(sys.argv[2][:-4] + "_PROCESSED.mp4")
 
     endT = time.time()
     dT = endT - startT
     print("Time Elapsed: %d" % dT)
-
-    print("CREATING VIDEO")
-    video.create_video("PROCESSED" + sys.argv[2])
