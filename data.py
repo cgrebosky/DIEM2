@@ -1,29 +1,43 @@
-import numpy as np
+import os
+
+
+def read_line(line: str):
+    words = line.split()
+
+    a = SingleEyeData(words[1], words[2], words[3], words[4])
+    b = SingleEyeData(words[5], words[6], words[7], words[8])
+
+    return a, b
 
 
 class SingleEyeData:
-    dil = 0
-    event = 0
-
-    # TODO: Change to be initialized via string, not randomized.  This works for now, tho
-    def __init__(self):
-        self.x = np.random.normal(500, 50)
-        self.y = np.random.normal(500, 50)
-
-
-class SingleFrameData:
-    frame_number = 0
-
-    def __init__(self):
-        self.eye_positions: list[SingleEyeData] = list()
-        for i in range(0, 25):
-            self.eye_positions.append(SingleEyeData())
+    def __init__(self, x, y, dil, event):
+        self.x = float(x)
+        self.y = float(y)
+        self.dil = float(dil)
+        self.event = int(event)
 
 
 class MovieData:
+    video_data = [[] for i in range(0, 528)]
 
-    def __init__(self):
-        self.video_data: list[SingleFrameData] = list()
-        for i in range(0, 528):
-            self.video_data.append(SingleFrameData())
-            self.video_data[i].frame_number = i+1
+    def __init__(self, data_url: str):
+
+        dir = "/Users/carsongrebosky/PycharmProjects/DIEM2/event_data/"
+        files = os.listdir(dir)
+
+        for i in files:
+            if i == ".gitkeep":
+                continue
+
+            file = open(dir + i, "r")
+
+            print("Gathering data for %s", i)
+
+            # TODO: Change to detect frame-count?  Probably while.
+            for j in range(0, 528):
+                a, b = read_line(file.readline())
+                self.video_data[j].append(a)
+                self.video_data[j].append(b)
+
+            file.close()
