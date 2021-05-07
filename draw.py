@@ -3,8 +3,8 @@ import numpy as np
 import data
 
 
-def draw_circle(point: data.SingleEyeData, img: cv2.cv2, circle_radius=20, circle_color=(0, 255, 0), thickness=1):
-    img = cv2.circle(img, (int(point.x), int(point.y)), circle_radius, circle_color, thickness=thickness)
+def draw_circle(point: data.SingleEyeData, img: cv2.cv2, circle_radius=5, circle_color=(0, 255, 0), thickness=1):
+    cv2.circle(img, (int(point.x), int(point.y)), circle_radius, circle_color, thickness=thickness)
 
 
 def draw_circles(frame_number):
@@ -14,8 +14,6 @@ def draw_circles(frame_number):
         draw_circle(i, img)
 
     cv2.imwrite(img_url, img)
-
-    print("Drawn circles for " + img_url)
 
 
 def draw_lines(frame_number):
@@ -36,7 +34,6 @@ def draw_lines(frame_number):
         img = cv2.line(img, pre_pos, post_pos, (0, 255, 0), 1)
 
     cv2.imwrite(img_url, img)
-    print("Drawn Lines for " + img_url)
 
 
 def make_opencv_heatmap(frame_number):
@@ -67,21 +64,18 @@ def draw_opencv_occluded_heatmap(frame_number):
     filename = "frames/f%04d" % frame_number + ".jpg"
 
     img = cv2.imread(filename)
-    black_img = make_opencv_heatmap(data.MovieData.video_data[frame_number-1])
+    black_img = make_opencv_heatmap(frame_number)
 
-    cv2.imwrite("cv_heatmap_test.jpg", black_img)
     black_img = black_img / 255
     img = img * black_img
     cv2.imwrite(filename, img)
-
-    print("Drawn Occluded Heatmap for " + filename)
 
 
 def draw_opencv_color_heatmap(frame_number):
     filename = "frames/f%04d" % frame_number + ".jpg"
 
     img = cv2.imread(filename)
-    black_img = make_opencv_heatmap(data.MovieData.video_data[frame_number-1])
+    black_img = make_opencv_heatmap(frame_number)
     false_colored = black_img.copy()
 
     cv2.applyColorMap(black_img, cv2.COLORMAP_JET, false_colored)
@@ -92,4 +86,3 @@ def draw_opencv_color_heatmap(frame_number):
     img = cv2.add(img, false_colored, dtype=cv2.CV_64F)
 
     cv2.imwrite(filename, img)
-    print("Drawn Color Heatmap for " + filename)

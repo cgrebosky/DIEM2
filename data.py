@@ -25,16 +25,15 @@ class MovieData:
 
     def __init__(self, data_url: str):
 
-        dir = "/Users/carsongrebosky/PycharmProjects/DIEM2/event_data/"
-        files = os.listdir(dir)
+        files = os.listdir(data_url)
 
         for i in files:
             if i == ".gitkeep":
                 continue
 
-            file = open(dir + i, "r")
+            file = open(data_url + i, "r")
 
-            print("Gathering data for %s", i)
+            print("Processing data for %s dataset" % i)
 
             # TODO: Change to detect frame-count?  Probably while.
             frame = 0

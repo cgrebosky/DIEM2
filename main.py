@@ -35,10 +35,11 @@ if __name__ == '__main__':
     print("SPLITTING VIDEO")
     video.split_video(sys.argv[2])
 
-    data.MovieData("event_data")
+    data.MovieData(data_url)
 
     for i in range(1, len(os.listdir("frames"))):
         manipulate_frame(args, i)
+        print("Processed frame %d" % i)
 
     print("CREATING VIDEO")
     video.create_video(sys.argv[2][:-4] + "_PROCESSED.mp4")
