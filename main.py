@@ -8,6 +8,8 @@ import video
 
 
 def manipulate_frame(_args: str, frame_number: int):
+    if frame_number > len(data.MovieData.video_data):
+        return
 
     if _args.find('h') >= 0:
         draw.draw_opencv_color_heatmap(frame_number)
@@ -46,4 +48,4 @@ if __name__ == '__main__':
 
     endT = time.time()
     dT = endT - startT
-    print("Time Elapsed: %d" % dT)
+    print("Time Elapsed: %d seconds" % dT)
