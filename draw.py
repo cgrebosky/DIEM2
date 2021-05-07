@@ -18,6 +18,27 @@ def draw_circles(frame_number):
     print("Drawn circles for " + img_url)
 
 
+def draw_lines(frame_number):
+    img_url = "frames/f%04d.jpg" % frame_number
+    img = cv2.imread(img_url)
+
+    # A bit ugly, but it works.  There may be a clearer way to do this
+    for i in range(0, len(data.MovieData.video_data[frame_number-1])):
+        pre = data.MovieData.video_data[frame_number-1][i]
+        post = data.MovieData.video_data[frame_number+1][i]
+
+        if pre.event != 1 or post.event != 1:
+            continue
+
+        pre_pos = (int(pre.x), int(pre.y))
+        post_pos = (int(post.x), int(post.y))
+
+        img = cv2.line(img, pre_pos, post_pos, (0, 255, 0), 1)
+
+    cv2.imwrite(img_url, img)
+    print("Drawn Lines for " + img_url)
+
+
 def make_opencv_heatmap(frame_number):
     # We're assuming, reasonably, that all frames are the same size, so just sample the 1st
     shape = cv2.imread("frames/f0001.jpg").shape

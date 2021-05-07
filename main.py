@@ -18,6 +18,9 @@ def manipulate_frame(_args: str, frame_number: int):
     if _args.find('c') >= 0:
         draw.draw_circles(frame_number)
 
+    if _args.find('l') >= 0:
+        draw.draw_lines(frame_number)
+
 
 if __name__ == '__main__':
     args = sys.argv[1]
