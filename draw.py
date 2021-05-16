@@ -16,9 +16,9 @@ def draw_circles(frame_number, img):
 
 def draw_lines(frame_number, img):
     # A bit ugly, but it works.  There may be a clearer way to do this
-    for i in range(0, len(data.MovieData.video_data[frame_number-2])):
-        pre = data.MovieData.video_data[frame_number-2][i]
-        post = data.MovieData.video_data[frame_number-1][i]
+    for i in range(0, len(data.MovieData.video_data[frame_number-1])):
+        pre = data.MovieData.video_data[frame_number-1][i]
+        post = data.MovieData.video_data[frame_number][i]
 
         if pre.event != 1 or post.event != 1:
             continue
