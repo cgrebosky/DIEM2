@@ -1,5 +1,7 @@
 import os
 
+import main
+
 
 def read_line(line: str):
     words = line.split()
@@ -25,7 +27,7 @@ class MovieData:
     # More space can be added on the fly, but that takes time, so we start with some space allocated
     video_data = [[] for i in range(0, 1000)]
 
-    def __init__(self, data_url: str):
+    def __init__(self, data_url: str, args):
 
         radius_increase_speed = .5
 
@@ -37,7 +39,8 @@ class MovieData:
 
             file = open(data_url + i, "r")
 
-            print("Processing data for %s dataset" % i)
+            if args.verbose:
+                print("Processing data for %s dataset" % i)
 
             # TODO: Change to detect frame-count?  Probably while.
             frame = 0
