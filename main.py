@@ -47,8 +47,6 @@ if __name__ == '__main__':
     parser.add_argument('--verbose', help="print a message with every process", action="store_true")
     args = parser.parse_args()
 
-    startT = time.time()
-
     if not args.nosplit:
         print("SPLITTING VIDEO")
         video.split_video(sys.argv[2])
@@ -66,7 +64,3 @@ if __name__ == '__main__':
     if not args.nocreate:
         print("CREATING VIDEO")
         video.create_video(args.video[:-4] + "_PROCESSED.mp4")
-
-    endT = time.time()
-    dT = endT - startT
-    print("Time Elapsed: %d seconds" % dT)
