@@ -11,11 +11,13 @@ def read_line(line: str):
 
 
 class SingleEyeData:
-    def __init__(self, x, y, dil, event):
+    def __init__(self, x, y, dil, event, radius=4):
         self.x = float(x)
         self.y = float(y)
         self.dil = float(dil)
         self.event = int(event)
+
+        self.radius = radius
 
 
 class MovieData:
@@ -24,6 +26,8 @@ class MovieData:
     video_data = [[] for i in range(0, 1000)]
 
     def __init__(self, data_url: str):
+
+        radius_increase_speed = .5
 
         files = os.listdir(data_url)
 
@@ -37,8 +41,14 @@ class MovieData:
 
             # TODO: Change to detect frame-count?  Probably while.
             frame = 0
+            prev_a, prev_b = "", ""
             for line in file:
                 a, b = read_line(line)
+
+                # Make circles larger every frame if saccade
+                if prev_a != "" and prev_b != "" and a.event == 1 and b.event == 1:
+                    a.radius = prev_a.radius + radius_increase_speed
+                    b.radius = prev_b.radius + radius_increase_speed
 
                 try:
                     self.video_data[frame].append(a)
@@ -50,5 +60,7 @@ class MovieData:
                     self.video_data[frame].append(b)
 
                 frame += 1
+                prev_a = a
+                prev_b = b
 
             file.close()

@@ -3,8 +3,8 @@ import numpy as np
 import data
 
 
-def draw_circle(point: data.SingleEyeData, img: cv2.cv2, circle_radius=5, circle_color=(0, 255, 0), thickness=1):
-    cv2.circle(img, (int(point.x), int(point.y)), circle_radius, circle_color, thickness=thickness)
+def draw_circle(point: data.SingleEyeData, img: cv2.cv2, circle_color=(0, 255, 0), thickness=1):
+    cv2.circle(img, (int(point.x), int(point.y)), int(point.radius), circle_color, thickness=thickness)
 
 
 def draw_circles(frame_number):
