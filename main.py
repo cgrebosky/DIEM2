@@ -28,8 +28,8 @@ def manipulate_frame(_args, frame_number: int):
     if _args.process.find('l') >= 0:
         draw.draw_lines(frame_number, img)
 
-    cv2.imwrite(img_url, img)
-
+    if not _args.nowrite:
+        cv2.imwrite(img_url, img)
     if _args.show:
         cv2.imshow("DIEM2 - press any 'ESC' to stop", img)
     if _args.verbose:
@@ -43,6 +43,7 @@ if __name__ == '__main__':
     parser.add_argument('data', type=str, help="The enclosing folder of the data")
     parser.add_argument('--nosplit', help="Skip the split-video-into-frames step", action="store_true")
     parser.add_argument('--nocreate', help="don't actually write to a video, just make frames", action="store_true")
+    parser.add_argument('--nowrite', help="don't actually write to frames, useful with --show", action="store_true")
     parser.add_argument('--show', help="show the results in real-time in a window. To stop, press 'ESC' key", action="store_true")
     parser.add_argument('--verbose', help="print a message with every process", action="store_true")
     args = parser.parse_args()
