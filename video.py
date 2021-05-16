@@ -1,7 +1,5 @@
 import os
 
-# TODO: Change these to OpenCV based, I'd rather avoid dependencies
-
 
 def split_video(url: str):
     # -loglevel panic
@@ -9,6 +7,9 @@ def split_video(url: str):
 
 
 def create_video(url: str, framerate=30):
+    # The HIGHER crf means LOWER quality and LOWER file size.
+    # This may be useful for making quick mock-ups, but for anything professional, 30 or lower is probably best.
+    crf = 30
     # -loglevel panic
     os.system("ffmpeg -y -r 30 -i frames/f%04d.jpg -strict experimental -vcodec libx264 -preset "
-              "ultrafast -crf 30 " + url)
+              "ultrafast -crf {crf} {url}".format(crf=crf, url=url))
