@@ -17,16 +17,16 @@ def manipulate_frame(_args, frame_number: int):
         return
 
     if _args.process.find('h') >= 0:
-        draw.draw_opencv_color_heatmap(frame_number, img)
+        img = draw.draw_opencv_color_heatmap(frame_number, img)
 
     if _args.process.find('o') >= 0:
-        draw.draw_opencv_occluded_heatmap(frame_number, img)
+        img = draw.draw_opencv_occluded_heatmap(frame_number, img)
 
     if _args.process.find('c') >= 0:
-        draw.draw_circles(frame_number, img)
+        img = draw.draw_circles(frame_number, img)
 
     if _args.process.find('l') >= 0:
-        draw.draw_lines(frame_number, img)
+        img = draw.draw_lines(frame_number, img)
 
     if not _args.nowrite:
         cv2.imwrite(img_url, img)
@@ -47,6 +47,10 @@ if __name__ == '__main__':
     parser.add_argument('--show', help="show the results in real-time in a window. To stop, press 'ESC' key", action="store_true")
     parser.add_argument('--verbose', help="print a message with every process", action="store_true")
     args = parser.parse_args()
+
+    if args.process.find("h") > -1 and args.process.find("o") > -1:
+        print("processing arguments `h` and `o` are mutually exclusive :'(")
+        sys.exit()
 
     if not args.nosplit:
         print("SPLITTING VIDEO")
