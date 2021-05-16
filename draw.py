@@ -7,19 +7,14 @@ def draw_circle(point: data.SingleEyeData, img: cv2.cv2, circle_color=(0, 255, 0
     cv2.circle(img, (int(point.x), int(point.y)), int(point.radius), circle_color, thickness=thickness)
 
 
-def draw_circles(frame_number):
-    img_url = "frames/f%04d.jpg" % frame_number
-    img = cv2.imread(img_url)
+def draw_circles(frame_number, img):
     for i in data.MovieData.video_data[frame_number-1]:
         draw_circle(i, img)
 
-    cv2.imwrite(img_url, img)
+    return img
 
 
-def draw_lines(frame_number):
-    img_url = "frames/f%04d.jpg" % frame_number
-    img = cv2.imread(img_url)
-
+def draw_lines(frame_number, img):
     # A bit ugly, but it works.  There may be a clearer way to do this
     for i in range(0, len(data.MovieData.video_data[frame_number-2])):
         pre = data.MovieData.video_data[frame_number-2][i]
@@ -33,7 +28,7 @@ def draw_lines(frame_number):
 
         img = cv2.line(img, pre_pos, post_pos, (0, 255, 0), 1)
 
-    cv2.imwrite(img_url, img)
+    return img
 
 
 def make_opencv_heatmap(frame_number):
@@ -60,21 +55,16 @@ def make_opencv_heatmap(frame_number):
     return black_img
 
 
-def draw_opencv_occluded_heatmap(frame_number):
-    filename = "frames/f%04d" % frame_number + ".jpg"
-
-    img = cv2.imread(filename)
+def draw_opencv_occluded_heatmap(frame_number, img):
     black_img = make_opencv_heatmap(frame_number)
 
     black_img = black_img / 255
     img = img * black_img
-    cv2.imwrite(filename, img)
+
+    return img
 
 
-def draw_opencv_color_heatmap(frame_number):
-    filename = "frames/f%04d" % frame_number + ".jpg"
-
-    img = cv2.imread(filename)
+def draw_opencv_color_heatmap(frame_number, img):
     black_img = make_opencv_heatmap(frame_number)
     false_colored = black_img.copy()
 
@@ -85,4 +75,4 @@ def draw_opencv_color_heatmap(frame_number):
     false_colored = false_colored * black_img
     img = cv2.add(img, false_colored, dtype=cv2.CV_64F)
 
-    cv2.imwrite(filename, img)
+    return img

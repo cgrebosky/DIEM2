@@ -5,24 +5,29 @@ import sys
 import time
 import data
 import video
+import cv2
 
 
 def manipulate_frame(_args: str, frame_number: int):
+    img_url = "frames/f%04d.jpg" % frame_number
+    img = cv2.imread(img_url)
+
     if frame_number > len(data.MovieData.video_data):
         return
 
     if _args.find('h') >= 0:
-        draw.draw_opencv_color_heatmap(frame_number)
+        draw.draw_opencv_color_heatmap(frame_number, img)
 
     if _args.find('o') >= 0:
-        draw.draw_opencv_occluded_heatmap(frame_number)
+        draw.draw_opencv_occluded_heatmap(frame_number, img)
 
     if _args.find('c') >= 0:
-        draw.draw_circles(frame_number)
+        draw.draw_circles(frame_number, img)
 
     if _args.find('l') >= 0:
-        draw.draw_lines(frame_number)
+        draw.draw_lines(frame_number, img)
 
+    cv2.imwrite(img_url, img)
 
 if __name__ == '__main__':
     args = sys.argv[1]
@@ -34,8 +39,8 @@ if __name__ == '__main__':
 
     startT = time.time()
 
-    print("SPLITTING VIDEO")
-    video.split_video(sys.argv[2])
+    # print("SPLITTING VIDEO")
+    # video.split_video(sys.argv[2])
 
     data.MovieData(data_url)
 
