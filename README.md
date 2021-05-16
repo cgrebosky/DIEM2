@@ -3,6 +3,7 @@ This project is a continuation of the old [DIEM](https://thediemproject.wordpres
 severely outdated, slow, and limited.  The goal of this update isn't to provide more functionality, but to avoid
 dependency hell and associated aging with the last version.
 
+![image](example.jpg "Example image with `hcl` options")
 
 ## Usage
 An example of a full command to run this program would look something like this:
