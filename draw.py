@@ -59,7 +59,7 @@ def draw_opencv_occluded_heatmap(frame_number, img):
     black_img = make_opencv_heatmap(frame_number)
 
     black_img = black_img / 255
-    img = img * black_img
+    img = img * black_img / 255
 
     return img
 
@@ -69,9 +69,12 @@ def draw_opencv_color_heatmap(frame_number, img):
     false_colored = black_img.copy()
 
     cv2.applyColorMap(black_img, cv2.COLORMAP_JET, false_colored)
-    black_img = black_img / 255
-    cv2.threshold(black_img, 0.3, 1.0, cv2.THRESH_TRUNC, black_img)
 
+    black_img = black_img / 255
+    img = img / 255
+    false_colored = false_colored / 255
+
+    cv2.threshold(black_img, 0.3, 1.0, cv2.THRESH_TRUNC, black_img)
     false_colored = false_colored * black_img
     img = cv2.add(img, false_colored, dtype=cv2.CV_64F)
 
