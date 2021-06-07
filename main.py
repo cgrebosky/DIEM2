@@ -22,7 +22,6 @@ def manipulate_frame(_args, frame_number: int):
     if _args.process.find('o') >= 0:
         img = draw.draw_opencv_occluded_heatmap(frame_number, img)
 
-
     if _args.process.find('c') >= 0:
         img = draw.draw_circles(frame_number, img)
 
@@ -42,6 +41,9 @@ if __name__ == '__main__':
     parser.add_argument('process', type=str, help="The processing arguments.  See README.md")
     parser.add_argument('video', type=str, help="The url of the input video")
     parser.add_argument('data', type=str, help="The enclosing folder of the data")
+    parser.add_argument('--lowquality', help="This only processes every 10th frame, which is much faster and the file"
+                                             "is much smaller, but it also drastically reduces "
+                                             "video quality.  Useful for quick drafts", action="store_true")
     parser.add_argument('--nosplit', help="Skip the split-video-into-frames step", action="store_true")
     parser.add_argument('--nocreate', help="don't actually write to a video, just make frames", action="store_true")
     parser.add_argument('--nowrite', help="don't actually write to frames, useful with --show", action="store_true")
@@ -57,7 +59,10 @@ if __name__ == '__main__':
     data.MovieData(args.data, args)
 
     print("PROCESSING FRAMES")
-    for i in range(1, len(os.listdir("frames"))):
+    step = 1
+    if args.lowquality:
+        step = 10
+    for i in range(1, len(os.listdir("frames")), step):
         manipulate_frame(args, i)
 
         if args.show and cv2.waitKey(1) & 0xFF == 27:
@@ -65,4 +70,4 @@ if __name__ == '__main__':
 
     if not args.nocreate:
         print("CREATING VIDEO")
-        video.create_video(args.video[:-4] + "_PROCESSED.mp4")
+        video.create_video(args.video[:-4] + "_PROCESSED.mp4", args.lowquality)
